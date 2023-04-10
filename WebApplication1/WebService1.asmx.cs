@@ -79,10 +79,34 @@ namespace WebApplication1
             MySqlConnection conn = new MySqlConnection();
             conn.ConnectionString = (connString);
             conn.Open();
-            string query = "SELECT\r\n    s.Id AS Id,\r\n    s.name,\r\n    AVG(g.Grade) AS averageGrade\r\nFROM\r\n" +
-                "    Student s\r\nJOIN\r\n    Grades g ON s.Id = g.Course_Id \r\nGROUP BY\r\n    s.Id, s.name;SELECT\r\n   " +
-                " s.Id AS Id,\r\n    s.name,\r\n    AVG(g.Grade) AS averageGrade\r\nFROM\r\n    Student s\r\nJOIN\r\n   " +
-                " Grades g ON s.Id = g.Course_Id \r\nGROUP BY\r\n    s.Id, s.name;";
+            string query = "SELECT s.Id, s.Name, AVG(g.Grade) as Average_Grade\r\nFROM Student s\r\nJOIN Grades g ON s.Id = g.Student_Id\r\nGROUP BY s.Id, s.Name;";
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                dt.Rows.Add(reader.GetString(0), reader.GetString(1), reader.GetString(2));
+            }
+
+            return dt;
+        }
+
+
+
+
+        [WebMethod]
+        public DataTable GetTop5()
+        {
+            DataTable dt = new DataTable("grades_tb ");
+            dt.Columns.Add("StudentID", typeof(string));
+            dt.Columns.Add("StudentName", typeof(string));
+            dt.Columns.Add("AverageGrade", typeof(string));
+
+            string connString = "server=localhost;uid=admin;pwd=admin1234;database=StudentGradesDB";
+            MySqlConnection conn = new MySqlConnection();
+            conn.ConnectionString = (connString);
+            conn.Open();
+            string query = "SELECT s.Id, s.Name, AVG(g.Grade) as Average_Grade\r\nFROM Student s\r\nJOIN Grades g ON s.Id = g.Student_Id\r\nGROUP BY s.Id, s.Name\r\nORDER BY Average_Grade DESC\r\nLIMIT 5;";
             MySqlCommand cmd = new MySqlCommand(query, conn);
             MySqlDataReader reader = cmd.ExecuteReader();
 
