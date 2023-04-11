@@ -21,7 +21,7 @@ namespace WebApplication1
     {
 
         [WebMethod]
-        public List<String> GetAll() // Method to retrieve all rows from the "Grades" table as a list of strings
+        public List<String> GetAll() // Method to retrieve all rows from the "Grades" table as a list of strings(test)
         {
             
             string connString = "server=localhost;uid=admin;pwd=admin1234;database=StudentGradesDB"; //Access MySql server
@@ -44,7 +44,7 @@ namespace WebApplication1
         }
 
         [WebMethod]
-        public DataTable GetDataTable() // Method to retrieve all rows from the "Grades" table as a DataTable
+        public DataTable GetDataTable() // Method to retrieve all rows from the "Grades" table as a DataTable(test)
         {
             DataTable dt = new DataTable("grades_tb ");
             dt.Columns.Add("StudentID", typeof(string));
