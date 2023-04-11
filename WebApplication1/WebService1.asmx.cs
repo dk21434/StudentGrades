@@ -21,10 +21,11 @@ namespace WebApplication1
     {
 
         [WebMethod]
-        public List<String> GetAll()
+        public List<String> GetAll() // Method to retrieve all rows from the "Grades" table as a list of strings
         {
-            string connString = "server=localhost;uid=admin;pwd=admin1234;database=StudentGradesDB";
-            MySqlConnection conn = new MySqlConnection();
+            
+            string connString = "server=localhost;uid=admin;pwd=admin1234;database=StudentGradesDB"; //Access MySql server
+            MySqlConnection conn = new MySqlConnection(); //Connection to MySql
             conn.ConnectionString = (connString);
             conn.Open();
             string query = "SELECT * FROM StudentGradesDB.Grades;";
@@ -43,7 +44,7 @@ namespace WebApplication1
         }
 
         [WebMethod]
-        public DataTable GetDataTable()
+        public DataTable GetDataTable() // Method to retrieve all rows from the "Grades" table as a DataTable
         {
             DataTable dt = new DataTable("grades_tb ");
             dt.Columns.Add("StudentID", typeof(string));
@@ -51,8 +52,8 @@ namespace WebApplication1
             dt.Columns.Add("CourseName", typeof(string));
             dt.Columns.Add("Grade", typeof(string));
 
-            string connString = "server=localhost;uid=admin;pwd=admin1234;database=StudentGradesDB";
-            MySqlConnection conn = new MySqlConnection();
+            string connString = "server=localhost;uid=admin;pwd=admin1234;database=StudentGradesDB"; //Access MySql server
+            MySqlConnection conn = new MySqlConnection(); //Connection to MySql
             conn.ConnectionString = (connString);
             conn.Open();
             string query = "SELECT * FROM StudentGradesDB.Grades;";
@@ -68,18 +69,18 @@ namespace WebApplication1
         }
 
         [WebMethod]
-        public DataTable GetAverage()
+        public DataTable GetAverage() // Method to retrieve the average grade for each student as a DataTable
         {
             DataTable dt = new DataTable("grades_tb ");
             dt.Columns.Add("StudentID", typeof(string));
             dt.Columns.Add("StudentName", typeof(string));
             dt.Columns.Add("AverageGrade", typeof(string));
 
-            string connString = "server=localhost;uid=admin;pwd=admin1234;database=StudentGradesDB";
-            MySqlConnection conn = new MySqlConnection();
+            string connString = "server=localhost;uid=admin;pwd=admin1234;database=StudentGradesDB"; //Access MySql server
+            MySqlConnection conn = new MySqlConnection(); //Connection to MySql
             conn.ConnectionString = (connString);
             conn.Open();
-            string query = "SELECT s.Id, s.Name, AVG(g.Grade) as Average_Grade\r\nFROM Student s\r\nJOIN Grades g ON s.Id = g.Student_Id\r\nGROUP BY s.Id, s.Name;";
+            string query = "SELECT s.Id, s.Name, AVG(g.Grade) as Average_Grade\r\nFROM Student s\r\nJOIN Grades g ON s.Id = g.Student_Id\r\nGROUP BY s.Id, s.Name;"; // Join the "Student" and "Grades" tables to retrieve the average grade for each student
             MySqlCommand cmd = new MySqlCommand(query, conn);
             MySqlDataReader reader = cmd.ExecuteReader();
 
@@ -94,29 +95,7 @@ namespace WebApplication1
 
 
 
-        [WebMethod]
-        public DataTable GetTop5()
-        {
-            DataTable dt = new DataTable("grades_tb ");
-            dt.Columns.Add("StudentID", typeof(string));
-            dt.Columns.Add("StudentName", typeof(string));
-            dt.Columns.Add("AverageGrade", typeof(string));
-
-            string connString = "server=localhost;uid=admin;pwd=admin1234;database=StudentGradesDB";
-            MySqlConnection conn = new MySqlConnection();
-            conn.ConnectionString = (connString);
-            conn.Open();
-            string query = "SELECT s.Id, s.Name, AVG(g.Grade) as Average_Grade\r\nFROM Student s\r\nJOIN Grades g ON s.Id = g.Student_Id\r\nGROUP BY s.Id, s.Name\r\nORDER BY Average_Grade DESC\r\nLIMIT 5;";
-            MySqlCommand cmd = new MySqlCommand(query, conn);
-            MySqlDataReader reader = cmd.ExecuteReader();
-
-            while (reader.Read())
-            {
-                dt.Rows.Add(reader.GetString(0), reader.GetString(1), reader.GetString(2));
-            }
-
-            return dt;
-        }
+      
 
 
 
